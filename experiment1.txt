@@ -1,0 +1,134 @@
+
+tar -xvf hadoop-3.1.2.tar.gz
+
+
+hadoop-3.1.2/LICENSE.txt
+hadoop-3.1.2/NOTICE.txt
+hadoop-3.1.2/README.txt
+hadoop-3.1.2/bin/
+hadoop-3.1.2/bin/hadoop
+hadoop-3.1.2/bin/hadoop.cmd
+hadoop-3.1.2/bin/hdfs
+hadoop-3.1.2/bin/hdfs.cmd
+hadoop-3.1.2/bin/container-executor
+hadoop-3.1.2/bin/test-container-executor
+hadoop-3.1.2/bin/yarn
+hadoop-3.1.2/bin/yarn.cmd
+hadoop-3.1.2/bin/mapred
+hadoop-3.1.2/bin/mapred.cmd
+hadoop-3.1.2/etc/
+hadoop-3.1.2/etc/hadoop/
+hadoop-3.1.2/etc/hadoop/core-site.xml
+hadoop-3.1.2/etc/hadoop/hadoop-env.cmd
+hadoop-3.1.2/etc/hadoop/hadoop-policy.xml
+hadoop-3.1.2/etc/hadoop/hadoop-user-functions.sh.example
+hadoop-3.1.2/etc/hadoop/ssl-client.xml.example
+...
+....
+.....
+......
+.......
+
+
+
+gedit .bashrc
+
+# Hadoop paths
+
+export HADOOP_HOME = $HOME/hadoop-3.1.2
+export HADOOP_CONF_DIR = $HOME/hadoop-3.1.2/etc/hadoop
+export HADOOP_MAPRED_HOME = $HOME/hadoop-3.1.2
+export HADOOP_COMMON_HOME = $HOME/hadoop-3.1.2
+export HADOOP_HADOOP_HDFS_HOME = $HOME/hadoop-3.1.2
+export HADOOP_YARN_HOME = $HOME/hadoop-3.1.2
+export PATH=$PATH:$HOME/hadoop-3.1.2/bin
+
+
+=== Settig up JAVA_HOME for hadoop to openjdk dynamically ===
+
+gedit hadoop-3.1.2/etc/hadoop/hadoop-env.sh
+
+==> in hadoop file 
+
+export JAVA_HOME=$HOME(readlink -f /usr/bin/java | sed "s:bin/java::")
+
+
+cd hadoop-3.1.2/etc/hadoop/
+
+==> opening file for rconfiguration
+
+gedit core-site.xml
+
+==> put following line in the file
+
+
+<configuration>
+<property>
+<name>fs.default.name</name>
+<value>hdfs://localhost:9000</value>
+</property>
+</configuration>
+
+==> opening file for rconfiguration
+
+gedit hdfs-site.xml 
+
+==> put following line in the file
+
+<property>
+<name>dfs.replication</name>
+<value>1</value>
+</property>
+<property>
+<name>dfs.permission</name>
+<value>false</value>
+</property>
+
+==> opening file for rconfiguration
+
+gedit mapred-site.xml 
+
+==> put following line in the file
+
+<property>
+<name>mapreduce.framework.name</name>
+<value>yarn</value>
+</property>
+
+==> opening file for rconfiguration
+
+gedit yarn-site.xml 
+
+==> put following line in the file
+
+<property>
+<name>yarn.nodemanager.aux-services</name>
+<value>mapreduce_shuffle</value>
+</property>
+<property>
+<name>yarn.nodemanager.auxservices.mapreduce.shuffle.class</name>
+<value>org.apache.hadoop.mapred.ShuffleHandler</value>
+</property>
+
+hadoop
+
+dtutil        operations related to delegation tokens
+envvars       display computed Hadoop environment variables
+fs            run a generic filesystem user client
+gridmix       submit a mix of synthetic job, modeling a profiled from
+              production load
+jar <jar>     run a jar file. NOTE: please use "yarn jar" to launch YARN
+              applications, not this command.
+jnipath       prints the java.library.path
+kdiag         Diagnose Kerberos Problems
+kerbname      show auth_to_local principal conversion
+key           manage keys via the KeyProvider
+rumenfolder   scale a rumen input trace
+rumentrace    convert logs into a rumen trace
+s3guard       manage metadata on S3
+trace         view and modify Hadoop tracing settings
+version       print the version
+..
+...
+....
+.....
